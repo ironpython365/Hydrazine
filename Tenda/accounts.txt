@@ -1,0 +1,12 @@
+178.207.153.194 8080 <empty>:tenda315920 Tenda Realtek Router, firmware: V12.01.01.41_multi
+178.173.53.3 8080 <empty>:Admin2000 Tenda Realtek Router, firmware: V12.01.01.39_multi
+178.57.115.96 8080 <empty>:FckPtnNNbZHoy123 Tenda Realtek Router, firmware: V12.01.01.36_multi
+185.183.12.81 8080 <empty>:putinhuylo Tenda Realtek Router, firmware: V12.01.01.41_multi
+158.46.38.188 8080 <empty>:81298129 Tenda Realtek Router, firmware: V12.01.01.36_multi
+176.107.221.95 8080 <empty>:Huylo123 Tenda Realtek Router, firmware: V03.03.01.37_multi
+178.207.153.198 8080 <empty>:tenda315920 Tenda Realtek Router, firmware: V12.01.01.41_multi
+176.241.192.52 8080 <empty>:06021992Avch Tenda Realtek Router, firmware: V12.01.01.36_multi
+176.120.211.22 8080 <empty>:tagirova Tenda Realtek Router, firmware: V12.01.01.41_multi
+185.18.112.194 8080 <empty>:admin3812 Tenda Realtek Router, firmware: V11.13.01.23_multi
+185.153.44.100 8080 <empty>:PopovichaStreet Tenda Realtek Router, firmware: V12.01.01.41_multi
+158.46.69.157 8080 <empty>:05071989 Tenda Realtek Router, firmware: V12.01.01.36_multi

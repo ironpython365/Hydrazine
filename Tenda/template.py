@@ -1,0 +1,27 @@
+system_module = {
+    "module1": "loginAuth",
+    "newPwd": "",
+    "oldPwd": "",
+    "module2": "wanAdvCfg",
+    "macClone": "default",
+    "wanMAC": "D8:32:14:3A:27:38",
+    "wanSpeed": "Auto",
+    "module3": "lanCfg",
+    "lanIP": "192.168.1.1",
+    "lanMask": "255.255.255.0",
+    "dhcpEn": True,
+    "lanDhcpStartIP": "192.168.1.100",
+    "lanDhcpEndIP": "192.168.1.200",
+    "lanDns1": "20.113.131.27",
+    "lanDns2": "8.8.8.8",
+    "module4": "remoteWeb",
+    "remoteWebEn": True,
+    "remoteWebType": "any",
+    "remoteWebIP": "",
+    "remoteWebPort": 8080,
+    "module5": "sysTime",
+    "sysTimeZone": 37,
+    "module6": "softWare",
+    "autoMaintenanceEn": True
+}
+
